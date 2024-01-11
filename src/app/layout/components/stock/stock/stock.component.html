@@ -39,7 +39,11 @@
       Move Stock to Shop
     </button>
     <button nz-button nzType="primary" (click)="addNewProduct()">
-      Add New Product
+      <span nz-icon nzType="plus-circle" nzTheme="outline"></span> Add New
+      Product
+    </button>
+    <button nz-button nzType="primary" (click)="download()">
+      <span nz-icon nzType="file-excel" nzTheme="outline"></span> Download
     </button>
   </div>
   <div class="table">
@@ -50,6 +54,7 @@
           <th>Brand</th>
           <th>Pattern</th>
           <th>Vehicle Type</th>
+          <th>PR</th>
           <th>Price</th>
           <th>Remarks</th>
           <th>Warehouse Stock Level</th>
@@ -63,6 +68,7 @@
           <td>{{ data.brand?.name }}</td>
           <td>{{ data.pattern }}</td>
           <td>{{ data.vehicleType?.name }}</td>
+          <td>{{ data.pr }}</td>
           <td>{{ data.price }}</td>
           <td>{{ data.remarks }}</td>
           <td>{{ data.stockLevel }}</td>

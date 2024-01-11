@@ -97,4 +97,20 @@ export class StockComponent implements OnInit {
       },
     });
   }
+  download() {
+    this.productService.downloadCSV().subscribe((data: ArrayBuffer) => {
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element and trigger a download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Products.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
+    });
+  }
 }

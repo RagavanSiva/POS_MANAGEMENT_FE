@@ -20,6 +20,10 @@ export class ProductService {
     const url = environment.product;
     return this.http.post(url, data);
   }
+  downloadCSV() {
+    const url = environment.product + '/csv-download';
+    return this.http.get(url, { responseType: 'arraybuffer' });
+  }
   increaseWareHouseStock(data: any, productId: any) {
     const url = environment.product + '/increase/' + productId;
     return this.http.patch(url, data);
