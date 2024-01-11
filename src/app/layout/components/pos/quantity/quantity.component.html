@@ -1,0 +1,26 @@
+<div class="container">
+  <form
+    nz-form
+    [nzAutoTips]="autoTips"
+    [formGroup]="quantityFormGroup"
+    (ngSubmit)="submit()"
+  >
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Quantity</nz-form-label>
+        <nz-form-control>
+          <input
+            autofocus
+            id="quantity"
+            nz-input
+            type="number"
+            formControlName="quantity"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row nzJustify="center">
+      <button nz-button type="submit" nzType="primary">Enter</button>
+    </div>
+  </form>
+</div>

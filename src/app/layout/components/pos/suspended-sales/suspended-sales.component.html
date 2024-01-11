@@ -1,0 +1,42 @@
+<div class="container">
+  <nz-table #basicTable [nzData]="dataSet">
+    <thead>
+      <tr>
+        <th>Suspended Sale ID</th>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Amount Paid</th>
+        <th>Amount Due</th>
+        <th>Unsuspend</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.customId }}</td>
+        <td>{{ data.transactionDate | date : "medium" }}</td>
+        <td>{{ data.totalAmount | number : ".2-2" }}</td>
+        <td>{{ data.recievedAmount | number : ".2-2" }}</td>
+        <td>{{ data.totalAmount - data.recievedAmount | number : ".2-2" }}</td>
+        <td>
+          <button nz-button nzType="primary" (click)="unsuspend(data)">
+            Unsuspend
+          </button>
+        </td>
+        <td>
+          <button
+            nz-button
+            nzType="primary"
+            nz-popconfirm
+            nzPopconfirmTitle="Are you sure want to delete this sale?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deleteTransaction(data._id)"
+            nzDanger
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

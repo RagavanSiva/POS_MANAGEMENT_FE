@@ -1,0 +1,197 @@
+<div class="container">
+  <div class="suspend" *ngIf="productList.length <= 0">
+    <button nz-button nzType="primary" (click)="redirectToSuspendedSale()">
+      Suspended Sales
+    </button>
+  </div>
+  <span>Sales Summary</span>
+  <nz-divider></nz-divider>
+  <div class="total">
+    <div nz-row nzJustify="space-between">
+      <span>Sub Total</span><span>{{ total | number : ".2-2" }}</span>
+    </div>
+    <div nz-row nzJustify="space-between">
+      <span>Discount</span><span>0.00</span>
+    </div>
+    <div nz-row nzJustify="space-between">
+      <span>VAT</span><span>0.00</span>
+    </div>
+    <nz-divider></nz-divider>
+    <div nz-row nzJustify="space-between">
+      <span>Total</span><span>{{ total | number : ".2-2" }}</span>
+    </div>
+    <div nz-row nzJustify="space-between" *ngIf="isVisible">
+      <span>Received Amount</span
+      ><span>
+        <input autofocus nz-input type="number" [(ngModel)]="receivedAmount"
+      /></span>
+    </div>
+    <div nz-row nzJustify="space-between" *ngIf="isVisible">
+      <span>Balance</span
+      ><span>{{
+        receivedAmount
+          ? (receivedAmount - total | number : ".2-2")
+          : (0 | number : ".2-2")
+      }}</span>
+    </div>
+  </div>
+
+  <button
+    nz-button
+    nzType="primary"
+    *ngIf="!isVisible"
+    [disabled]="productList.length <= 0"
+    (click)="openTransaction()"
+  >
+    Payment
+  </button>
+  <button
+    nz-button
+    nzType="primary"
+    *ngIf="isVisible"
+    (click)="saveTransaction()"
+  >
+    Complete Sale
+  </button>
+  <div class="bottom">
+    <button
+      nz-button
+      *ngIf="productList.length > 0"
+      type="submit"
+      nzType="primary"
+      nz-popconfirm
+      nzPopconfirmTitle="Are you sure want to hold this Sale?"
+      nzPopconfirmPlacement="bottom"
+      (nzOnConfirm)="holdTransaction()"
+    >
+      <span nz-icon nzType="pause" nzTheme="outline"></span>HOLD
+    </button>
+    <button
+      nz-popconfirm
+      *ngIf="productList.length > 0"
+      nzPopconfirmTitle="Are you sure clear this Sale?"
+      nzPopconfirmPlacement="bottom"
+      (nzOnConfirm)="clear()"
+      nz-button
+      type="submit"
+      nzType="primary"
+    >
+      <span nz-icon nzType="stop" nzTheme="outline"></span>CLEAR
+    </button>
+  </div>
+  <br />
+
+  <button
+    nz-button
+    [disabled]="products.length <= 0"
+    nzType="primary"
+    printSectionId="invoice-POS"
+    [useExistingCss]="true"
+    styleSheetFile="assets/print.css"
+    ngxPrint
+  >
+    <span nz-icon nzType="printer" nzTheme="outline"></span>
+  </button>
+</div>
+<div class="pos-bill" [hidden]="true">
+  <div id="invoice-POS">
+    <div nz-row>
+      <div nz-col nzSpan="24" class="name">Tyre Shop</div>
+    </div>
+    <div nz-row>
+      <div nz-col nzSpan="24" class="name">
+        <p>address</p>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col nzSpan="24" class="name">
+        <p>Tel : 021 222 3501</p>
+      </div>
+    </div>
+    <div nz-row class="bill">
+      <div nz-col nzSpan="12" class="bill_number">
+        <p>Bill :</p>
+      </div>
+      <div nz-col nzSpan="12" class="date">
+        <p>Date</p>
+      </div>
+    </div>
+
+    <hr />
+    <div nz-row>
+      <div nz-col nzSpan="24" class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of products; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>
+                {{ data?.brand?.name + " " + data?.size + " " + data.pattern }}
+              </td>
+              <td>{{ data.price | number : ".2-2" }}</td>
+              <td>{{ data.quantity }}</td>
+              <td>{{ data.netTotal | number : ".2-2" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr />
+    <div nz-row class="total">
+      <div nz-col nzSpan="12" class="amount">
+        <p>Total Amount</p>
+      </div>
+      <div nz-col nzSpan="12" class="price">
+        <p>00.00</p>
+      </div>
+    </div>
+    <div nz-row class="cash">
+      <div nz-col nzSpan="12" class="salesMan">
+        <p>Cash</p>
+      </div>
+      <div nz-col nzSpan="12" class="time">
+        <p>0.00</p>
+      </div>
+    </div>
+    <div nz-row class="cash1">
+      <div nz-col nzSpan="12" class="salesMan">
+        <p>Balance</p>
+      </div>
+      <div nz-col nzSpan="12" class="time">
+        <p>00.00</p>
+      </div>
+    </div>
+
+    <div style="position: relative; top: 35px">
+      <div nz-row>
+        <div nz-col nzSpan="24" class="name1">
+          <hr />
+          <!-- <p>Home Delivery : 021 222 0502</p> -->
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col nzSpan="24" class="name">
+          <p>Return should be taken within 3 Days, With invoice</p>
+          <p>cash Not Refundable</p>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col nzSpan="24" class="name">
+          <p>Thank You & Come Again</p>
+          <p>s/w Solution : Codelantic PVT Limited</p>
+          <nz-divider nzDashed class="dash1"></nz-divider>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End Invoice-->
+</div>

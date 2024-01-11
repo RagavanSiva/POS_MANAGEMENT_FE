@@ -1,0 +1,60 @@
+#invoice-POS {
+    
+    width: 100%;
+    background: #FFF;
+    
+  }
+.name{
+    text-align: center;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+@page {
+    width: 44mm;
+    padding: 0;
+    margin: 2mm;
+  
+  }
+  @media print {
+    body {
+      font-size: 12pt;
+    }
+  
+    .pos-bill {
+      width: 100%;
+      margin: 0;
+    }
+  
+    table {
+      width: 100%;
+    }
+  
+    th, td {
+      border: none;
+      background: #FFF;
+      padding: 8px;
+    }
+  
+    th {
+      background-color: #f2f2f2;
+    }
+  
+    .total-section {
+      margin-top: 10px;
+    }
+  }

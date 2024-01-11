@@ -1,0 +1,42 @@
+<div class="container">
+  <form nz-form [nzAutoTips]="autoTips" [formGroup]="productFormGroup">
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Product</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            nzAutoFocus
+            nzShowSearch
+            nzAllowClear
+            nzServerSearch
+            [nzDropdownMatchSelectWidth]="false"
+            formControlName="product"
+            [nzShowArrow]="false"
+            [nzFilterOption]="nzFilterOption"
+            (nzOnSearch)="searchProduct($event)"
+            nzPlaceHolder="Type here to search"
+          >
+            <nz-option
+              *ngFor="let data of productList"
+              [nzValue]="data._id"
+              [nzLabel]="
+                data.brand?.name + ' ' + data.size + ' ' + data.pattern
+              "
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Quantity</nz-form-label>
+        <nz-form-control>
+          <input nz-input type="number" formControlName="quantity" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="button">
+      <button nz-button type="submit" nzType="primary" (click)="submit()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

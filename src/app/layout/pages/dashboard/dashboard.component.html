@@ -1,0 +1,47 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" routerLinkActive="active" nzMode="inline">
+      <li
+        nz-menu-item
+        nzMatchRouter
+        routerLink="stock"
+        routerLinkActive="active"
+      >
+        <span nz-icon nzType="fund" nzMode="inline"></span>
+        <span>Stock</span>
+      </li>
+      <li nz-menu-item nzMatchRouter routerLink="pos" routerLinkActive="active">
+        <span nz-icon nzType="shopping-cart" nzMode="inline"></span>
+        <span>POS</span>
+      </li>
+      <li
+        nz-menu-item
+        nzMatchRouter
+        routerLink="transaction"
+        routerLinkActive="active"
+      >
+        <span nz-icon nzType="bar-chart" nzMode="inline"></span>
+        <span>Transaction</span>
+      </li>
+      <li nz-menu-item (click)="logout()">
+        <span nz-icon nzType="logout" nzMode="inline"></span>
+        <span>Log out</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+      <span>{{ time | date : "medium" }}</span>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content"><router-outlet></router-outlet></div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

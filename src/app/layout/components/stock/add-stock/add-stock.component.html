@@ -1,0 +1,85 @@
+<div class="container">
+  <form
+    nz-form
+    [nzAutoTips]="autoTips"
+    [formGroup]="productFormGroup"
+    (ngSubmit)="saveProduct()"
+  >
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Size</nz-form-label>
+        <nz-form-control>
+          <input autofocus nz-input name="size" formControlName="size" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Brand</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear nzShowSearch formControlName="brand">
+            <nz-option
+              *ngFor="let data of brandList"
+              [nzValue]="data"
+              [nzLabel]="data.name"
+            ></nz-option>
+          </nz-select>
+          <span
+            nz-icon
+            (click)="openBrand()"
+            nzType="plus-circle"
+            nzTheme="outline"
+          ></span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Pattern</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="pattern" formControlName="pattern" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>PR</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="pr" formControlName="pr" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Vehicle Type</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear nzShowSearch formControlName="vehicleType">
+            <nz-option
+              *ngFor="let data of vehicleTypeList"
+              [nzValue]="data"
+              [nzLabel]="data.name"
+            ></nz-option>
+          </nz-select>
+          <span
+            nz-icon
+            (click)="openVehicleType()"
+            nzType="plus-circle"
+            nzTheme="outline"
+          ></span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Price</nz-form-label>
+        <nz-form-control>
+          <input nz-input type="number" formControlName="price" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Remarks</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="remarks" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="button">
+      <button nz-button type="submit" nzType="primary">Save</button>
+    </div>
+  </form>
+</div>
+<ng-template #suffixButton>
+  <button nz-button nzType="primary" nzSize="large">ADD</button>
+</ng-template>

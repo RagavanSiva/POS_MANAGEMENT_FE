@@ -1,0 +1,20 @@
+<div class="container">
+  <form
+    nz-form
+    [nzAutoTips]="autoTips"
+    [formGroup]="brandFormGroup"
+    (ngSubmit)="submit()"
+  >
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Name</nz-form-label>
+        <nz-form-control>
+          <input autofocus nz-input name="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="button">
+      <button nz-button type="submit" nzType="primary">Save</button>
+    </div>
+  </form>
+</div>

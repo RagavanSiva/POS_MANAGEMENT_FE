@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="searchBar">
+    <nz-select
+      nzAutoFocus
+      nzShowSearch
+      nzAllowClear
+      nzServerSearch
+      [(ngModel)]="search"
+      (nzOpenChange)="addProduct()"
+      [nzShowArrow]="false"
+      [nzFilterOption]="nzFilterOption"
+      (nzOnSearch)="searchProduct($event)"
+      nzPlaceHolder="Type here to search"
+    >
+      <nz-option
+        *ngFor="let data of productList"
+        [nzValue]="data"
+        [nzLabel]="data.brand?.name + ' ' + data.size + ' ' + data.pattern"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <div class="table">
+    <nz-table #basicTable nzFrontPagination="false" [nzData]="dataSet">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Item</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          [tabindex]="i"
+          *ngFor="let data of dataSet; index as i"
+          (keydown)="handleKeyDown($event, i)"
+          id="row-{{ i }}"
+        >
+          <td>{{ i + 1 }}</td>
+          <td>
+            {{ data?.brand?.name + " " + data?.size + " " + data.pattern }}
+          </td>
+          <td>{{ data.price | number : ".2-2" }}</td>
+          <td>
+            <span
+              nz-icon
+              nzType="minus-circle"
+              (click)="decreaseQty(i)"
+              nzTheme="outline"
+            ></span
+            >{{ "  " + data.quantity + "  "
+            }}<span
+              nz-icon
+              nzType="plus-circle"
+              (click)="increaseQty(i)"
+              nzTheme="outline"
+            ></span>
+          </td>
+          <td>{{ data.netTotal | number : ".2-2" }}</td>
+          <td>
+            <span
+              nz-icon
+              nzType="close"
+              nzTheme="outline"
+              (click)="removeProduct(i)"
+              style="color: red"
+            ></span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
