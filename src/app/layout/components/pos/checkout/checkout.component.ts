@@ -143,6 +143,7 @@ export class CheckoutComponent {
     };
     this.transactionService.saveTransaction(data).subscribe({
       next: (res: any) => {
+        this.bill = res;
         this.clear();
         this.notification.create('success', '', 'Transaction Suspended');
       },

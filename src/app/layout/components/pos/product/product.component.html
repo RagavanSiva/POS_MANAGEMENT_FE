@@ -1,4 +1,4 @@
-<div class="container" (keydown)="handlebarCode($event)" tabindex="0">
+<div class="container" (window:keydown)="handlebarCode($event)">
   <div class="searchBar">
     <nz-select
       nzAutoFocus
@@ -35,7 +35,6 @@
         <tr
           [tabindex]="i"
           *ngFor="let data of dataSet; index as i"
-          (keydown)="handleKeyDown($event, i)"
           id="row-{{ i }}"
         >
           <td>{{ i + 1 }}</td>

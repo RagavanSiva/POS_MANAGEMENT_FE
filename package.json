@@ -1,12 +1,12 @@
 {
-  "name": "salon-management",
+  "name": "pos-management",
   "version": "0.0.0",
   "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "electron": "electron .",
-    "electron-build": "ng build && electron .",
+    "electron-package": "ng build --configuration=production && electron-packager . --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

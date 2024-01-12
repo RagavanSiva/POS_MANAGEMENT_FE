@@ -1,15 +1,16 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ProductService } from '../../../../_service/product.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { QuantityComponent } from '../quantity/quantity.component';
 import { BarcodeScannerService } from '../../../../_service/barcode-scanner.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrl: './product.component.sass',
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   dataSet: any[] = [];
   productList: any[] = [];
   search: any;
@@ -17,12 +18,16 @@ export class ProductComponent implements OnInit {
   focusedRowIndex: number = -1;
   autoFocus = true;
   private barcode = '';
+  subscription!: Subscription;
   nzFilterOption = (): boolean => true;
   constructor(
     private productService: ProductService,
     private modalService: NzModalService,
     private barcodeScannerService: BarcodeScannerService
   ) {}
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
   ngOnInit(): void {
     this.productService.productList$.subscribe({
       next: (res) => {
@@ -34,11 +39,13 @@ export class ProductComponent implements OnInit {
     this.subscribeToBarcodeScanner();
   }
   subscribeToBarcodeScanner(): void {
-    this.barcodeScannerService.onBarcodeScanned().subscribe((barcode) => {
-      // Handle the scanned barcode value here
-      console.log('Scanned barcode:', barcode);
-      this.getProductDetailsByBarcode(barcode);
-    });
+    this.subscription = this.barcodeScannerService
+      .onBarcodeScanned()
+      .subscribe((barcode) => {
+        // Handle the scanned barcode value here
+        console.log('Scanned barcode:', barcode);
+        this.getProductDetailsByBarcode(barcode);
+      });
   }
 
   searchProduct(event: any) {
