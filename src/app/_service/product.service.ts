@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -19,6 +19,10 @@ export class ProductService {
   saveProduct(data: any) {
     const url = environment.product;
     return this.http.post(url, data);
+  }
+  getProductDetailsbyBarcode(data: any) {
+    const url = environment.product + '/barcode/' + data;
+    return this.http.get(url);
   }
   downloadCSV() {
     const url = environment.product + '/csv-download';
@@ -54,5 +58,14 @@ export class ProductService {
 
     const url = environment.product + '/search';
     return this.http.get(url, { params: httpParam });
+  }
+
+  generateBarcode(productId: string): Observable<Blob> {
+    const url = environment.product + '/download-barcode/' + productId;
+    const headers = new HttpHeaders({
+      'Content-Type': 'image/png',
+    });
+
+    return this.http.get(url, { responseType: 'blob', headers });
   }
 }

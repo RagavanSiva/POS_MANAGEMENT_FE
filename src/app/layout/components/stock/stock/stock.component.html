@@ -60,6 +60,7 @@
           <th>Warehouse Stock Level</th>
           <th>Shop Stock Level</th>
           <th>Total Stock Level</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -74,6 +75,16 @@
           <td>{{ data.stockLevel }}</td>
           <td>{{ data.subStockLevel }}</td>
           <td>{{ data.stockLevel + data.subStockLevel }}</td>
+          <td>
+            <button
+              *ngIf="data.barcode"
+              nz-button
+              nzType="primary"
+              (click)="generateBarcode(data._id, data)"
+            >
+              Download Barcode
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>

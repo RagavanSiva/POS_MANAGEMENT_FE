@@ -19,6 +19,7 @@ export class StockComponent implements OnInit {
   vehicleType: any;
   brandList: any[] = [];
   vehicleTypeList: any[] = [];
+  barcodeImage: any;
   constructor(
     private productService: ProductService,
     private brandService: BrandService,
@@ -106,6 +107,28 @@ export class StockComponent implements OnInit {
       const a = document.createElement('a');
       a.href = url;
       a.download = 'Products.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
+    });
+  }
+  generateBarcode(productId: any, product: any) {
+    this.productService.generateBarcode(productId).subscribe((data: any) => {
+      const blob = new Blob([data], { type: 'image/png' });
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element and trigger a download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download =
+        product?.brand?.name +
+        ' ' +
+        product.size +
+        ' ' +
+        product.pattern +
+        '.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

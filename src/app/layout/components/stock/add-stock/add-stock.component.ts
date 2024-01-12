@@ -62,6 +62,7 @@ export class AddStockComponent implements OnInit {
       price: [null, [customRequired('Price')]],
       pr: [null, [customRequired('PR')]],
       remarks: [null],
+      barcode: [null],
     });
   }
 

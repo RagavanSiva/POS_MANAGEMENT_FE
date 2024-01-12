@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ProductService } from '../../../../_service/product.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { QuantityComponent } from '../quantity/quantity.component';
+import { BarcodeScannerService } from '../../../../_service/barcode-scanner.service';
 
 @Component({
   selector: 'app-product',
@@ -15,10 +16,12 @@ export class ProductComponent implements OnInit {
   quantity = 1;
   focusedRowIndex: number = -1;
   autoFocus = true;
+  private barcode = '';
   nzFilterOption = (): boolean => true;
   constructor(
     private productService: ProductService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private barcodeScannerService: BarcodeScannerService
   ) {}
   ngOnInit(): void {
     this.productService.productList$.subscribe({
@@ -27,6 +30,14 @@ export class ProductComponent implements OnInit {
 
         this.dataSet = res;
       },
+    });
+    this.subscribeToBarcodeScanner();
+  }
+  subscribeToBarcodeScanner(): void {
+    this.barcodeScannerService.onBarcodeScanned().subscribe((barcode) => {
+      // Handle the scanned barcode value here
+      console.log('Scanned barcode:', barcode);
+      this.getProductDetailsByBarcode(barcode);
     });
   }
 
@@ -118,5 +129,35 @@ export class ProductComponent implements OnInit {
         this.focusedRowIndex = newIndex;
       }
     }
+  }
+
+  handlebarCode(event: KeyboardEvent): void {
+    const textInput = event.key || String.fromCharCode(event.keyCode);
+    if (event.key === 'Enter') {
+      // Emit the barcode when Enter key is pressed
+      this.barcodeScannerService.emitBarcode(this.barcode);
+
+      // Clear the barcode for the next scan
+      this.barcode = '';
+      return;
+    }
+
+    // Append the key to the barcode
+    this.barcode = this.barcode + event.key;
+  }
+  getProductDetailsByBarcode(data: any) {
+    this.productService.getProductDetailsbyBarcode(data).subscribe({
+      next: (res) => {
+        this.productService.product = res;
+        this.productService.productList.push({
+          ...this.productService.product,
+          quantity: 1,
+          netTotal: 1 * this.productService.product.price,
+        });
+        this.productService.updateProductListData(
+          this.productService.productList
+        );
+      },
+    });
   }
 }
