@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MyValidators } from '../../../../_validators/custom-validator';
 import { ProductService } from '../../../../_service/product.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { AddBrandComponent } from '../add-brand/add-brand.component';
 import { AddVehicleTypeComponent } from '../add-vehicle-type/add-vehicle-type.component';
 
@@ -32,7 +32,8 @@ export class AddStockComponent implements OnInit {
     private productService: ProductService,
     private notification: NzNotificationService,
     private fb: FormBuilder,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private modalref: NzModalRef
   ) {}
   ngOnInit(): void {
     this.initForm();
@@ -49,11 +50,7 @@ export class AddStockComponent implements OnInit {
     });
   }
   initForm() {
-    const {
-      customRequired,
-
-      pattern,
-    } = MyValidators;
+    const { customRequired, exactLength, pattern } = MyValidators;
     this.productFormGroup = this.fb.group({
       size: [null, [customRequired('Size')]],
       brand: [null, [customRequired('Brand')]],
@@ -62,7 +59,7 @@ export class AddStockComponent implements OnInit {
       price: [null, [customRequired('Price')]],
       pr: [null, [customRequired('PR')]],
       remarks: [null],
-      barcode: [null],
+      barcode: [null, [exactLength(13)]],
     });
   }
 
@@ -93,6 +90,7 @@ export class AddStockComponent implements OnInit {
             'Product Saved Successfully'
           );
           this.productFormGroup.reset();
+          this.modalref.close();
         },
       });
     }

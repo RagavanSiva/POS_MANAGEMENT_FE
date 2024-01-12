@@ -27,10 +27,8 @@ export class CheckoutComponent {
   ngOnInit(): void {
     this.productService.productList$.subscribe({
       next: (res: any[]) => {
-        if (res.length) {
-          this.productList = res;
-          this.calculateTotal(res);
-        }
+        this.productList = res;
+        this.calculateTotal(res);
       },
     });
   }

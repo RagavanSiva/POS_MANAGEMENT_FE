@@ -4,6 +4,7 @@
       [(ngModel)]="date"
       (ngModelChange)="getAllTransaction()"
     ></nz-range-picker>
+    <button nz-button nzType="primary" (click)="download()">Download</button>
   </div>
 
   <div class="amount">

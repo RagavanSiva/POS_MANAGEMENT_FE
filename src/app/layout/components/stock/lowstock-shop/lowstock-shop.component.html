@@ -1,0 +1,32 @@
+<div class="table">
+  <nz-table [nzFrontPagination]="true" #basicTable [nzData]="dataSet">
+    <thead>
+      <tr>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Pattern</th>
+        <th>Vehicle Type</th>
+        <th>PR</th>
+        <th>Price</th>
+        <th>Remarks</th>
+        <th>Shop Stock Level</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.size }}</td>
+        <td>{{ data.brand?.name }}</td>
+        <td>{{ data.pattern }}</td>
+        <td>{{ data.vehicleType?.name }}</td>
+        <td>{{ data.pr }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.remarks }}</td>
+        <td>{{ data.subStockLevel }}</td>
+
+        <td></td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

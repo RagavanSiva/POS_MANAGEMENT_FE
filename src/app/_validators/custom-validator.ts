@@ -150,8 +150,10 @@ export class MyValidators extends Validators {
   static exactLength(length: number): ValidatorFn {
     return (control: AbstractControl): MyValidationErrors | null => {
       if (
-        Validators.maxLength(length)(control) === null &&
-        Validators.minLength(length)(control) === null
+        control.value == null ||
+        control.value == '' ||
+        (Validators.maxLength(length)(control) === null &&
+          Validators.minLength(length)(control) === null)
       ) {
         return null;
       }

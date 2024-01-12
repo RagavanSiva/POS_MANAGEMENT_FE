@@ -24,6 +24,14 @@ export class ProductService {
     const url = environment.product + '/barcode/' + data;
     return this.http.get(url);
   }
+  getLowStockProductsWarehouse() {
+    const url = environment.product + '/lowstock-warehouse';
+    return this.http.get(url);
+  }
+  getLowStockProductsShop() {
+    const url = environment.product + '/lowstock-shop';
+    return this.http.get(url);
+  }
   downloadCSV() {
     const url = environment.product + '/csv-download';
     return this.http.get(url, { responseType: 'arraybuffer' });

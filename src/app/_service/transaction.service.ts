@@ -41,6 +41,21 @@ export class TransactionService {
     const url = environment.transaction;
     return this.http.get(url, { params: httpParam });
   }
+  downloadCSV(data: any) {
+    let httpParam = new HttpParams();
+    data.startDate
+      ? (httpParam = httpParam.append('startDate', data.startDate))
+      : null;
+    data.endDate
+      ? (httpParam = httpParam.append('endDate', data.endDate))
+      : null;
+
+    const url = environment.transaction + '/download';
+    return this.http.get(url, {
+      responseType: 'arraybuffer',
+      params: httpParam,
+    });
+  }
   getAllSuspendedTransaction(data: any) {
     let httpParam = new HttpParams();
 
