@@ -1,60 +1,138 @@
-#invoice-POS {
-    
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.container {
+    display: block;
     width: 100%;
-    background: #FFF;
-    
-  }
-.name{
+    background: #fff;
+
+}
+
+.receipt_header {
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #000;
     text-align: center;
 }
 
+.receipt_header h1 {
+    font-size: 15px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.receipt_header h1 span {
+    display: block;
+    font-size: 16px;
+}
+
+.receipt_header h2 {
+    font-size: 10px;
+    color: #727070;
+    font-weight: 300;
+}
+
+.receipt_header h2 span {
+    display: block;
+}
+
+.receipt_body {
+    margin-top: 15px;
+    font-size: 10px;
+}
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    font-size: 12px;
+}
+
+thead, tfoot {
+    position: relative;
+}
+
+thead th:not(:last-child) {
     text-align: left;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
+}
+
+thead th:last-child {
+    text-align: right;
+}
+thead th{
+    font-size: 8px;
+}
+
+thead::after {
+    content: '';
+    width: 100%;
+    border-bottom: 1px dashed #000;
+    display: block;
+    position: absolute;
+}
+
+tbody td:not(:last-child), tfoot td:not(:last-child) {
+    text-align: left;
+}
+
+tbody td:last-child, tfoot td:last-child{
+    text-align: right;
+}
+tbody td{
+    font-size: 8px;
+}
+
+tbody tr:first-child td {
+    padding-top: 10px;
+}
+
+tbody tr:last-child td {
+    padding-bottom: 10px;
+}
+
+tfoot tr:first-child td {
+    padding-top: 10px;
+}
+tfoot{
+    font-size: 10px;
+}
+
+tfoot::before {
+    content: '';
+    width: 100%;
+    border-top: 1px dashed #000;
+    display: block;
+    position: absolute;
+}
+
+tfoot tr:first-child td:first-child, tfoot tr:first-child td:last-child {
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.date_time_con {
+    display: flex;
+    justify-content: space-between;
+   
+}
+
+.items {
+    margin-top: 20px;
+}
+
+h3 {
+    border-top: 1px dashed #000;
+    padding-top: 10px;
+    margin-top: 20px;
+    text-align: center;
+    text-transform: uppercase;
+}
 @page {
-    width: 44mm;
-    padding: 0;
-    margin: 2mm;
-  
-  }
-  @media print {
-    body {
-      font-size: 12pt;
-    }
-  
-    .pos-bill {
-      width: 100%;
-      margin: 0;
-    }
-  
-    table {
-      width: 100%;
-    }
-  
-    th, td {
-      border: none;
-      background: #FFF;
-      padding: 8px;
-    }
-  
-    th {
-      background-color: #f2f2f2;
-    }
-  
-    .total-section {
-      margin-top: 10px;
-    }
-  }
+  width: 44mm;
+  padding: 0;
+  margin: 2mm;
+
+}

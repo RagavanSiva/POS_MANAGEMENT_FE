@@ -95,102 +95,75 @@
 </div>
 <div class="pos-bill" [hidden]="true">
   <div id="invoice-POS">
-    <div nz-row>
-      <div nz-col nzSpan="24" class="name">Tyre Shop</div>
-    </div>
-    <div nz-row>
-      <div nz-col nzSpan="24" class="name">
-        <p>address</p>
+    <div class="container">
+      <div class="receipt_header">
+        <span>Shop Name</span>
+        <h2>Address: Lorem Ipsum, 1234-5 <span>Tel: +1 012 345 67 89</span></h2>
       </div>
-    </div>
-    <div nz-row>
-      <div nz-col nzSpan="24" class="name">
-        <p>Tel : 021 222 3501</p>
-      </div>
-    </div>
-    <div nz-row class="bill">
-      <div nz-col nzSpan="12" class="bill_number">
-        <p>Bill :</p>
-      </div>
-      <div nz-col nzSpan="12" class="date">
-        <p>Date</p>
-      </div>
-    </div>
 
-    <hr />
-    <div nz-row>
-      <div nz-col nzSpan="24" class="table">
-        <table>
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of products; index as i">
-              <td>{{ i + 1 }}</td>
-              <td>
-                {{ data?.brand?.name + " " + data?.size + " " + data.pattern }}
-              </td>
-              <td>{{ data.price | number : ".2-2" }}</td>
-              <td>{{ data.quantity }}</td>
-              <td>{{ data.netTotal | number : ".2-2" }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <div class="receipt_body">
+        <div class="date_time_con">
+          <div class="date">Bill No: {{ bill?.customId }}</div>
+        </div>
+        <div class="date_time_con">
+          <div class="date">
+            {{ bill?.transactionDate | date : "yyyy-MM-dd" }}
+          </div>
+          <div class="time">{{ bill?.transactionDate | date : "h:mm a" }}</div>
+        </div>
 
-    <hr />
-    <div nz-row class="total">
-      <div nz-col nzSpan="12" class="amount">
-        <p>Total Amount</p>
-      </div>
-      <div nz-col nzSpan="12" class="price">
-        <p>00.00</p>
-      </div>
-    </div>
-    <div nz-row class="cash">
-      <div nz-col nzSpan="12" class="salesMan">
-        <p>Cash</p>
-      </div>
-      <div nz-col nzSpan="12" class="time">
-        <p>0.00</p>
-      </div>
-    </div>
-    <div nz-row class="cash1">
-      <div nz-col nzSpan="12" class="salesMan">
-        <p>Balance</p>
-      </div>
-      <div nz-col nzSpan="12" class="time">
-        <p>00.00</p>
-      </div>
-    </div>
+        <div class="items">
+          <table>
+            <thead>
+              <th>ITEM</th>
+              <th>QTY</th>
+              <th>AMT</th>
+            </thead>
 
-    <div style="position: relative; top: 35px">
-      <div nz-row>
-        <div nz-col nzSpan="24" class="name1">
-          <hr />
-          <!-- <p>Home Delivery : 021 222 0502</p> -->
+            <tbody>
+              <tr *ngFor="let data of bill?.products">
+                <td>
+                  {{
+                    data?.product?.brand?.name +
+                      " " +
+                      data?.product?.size +
+                      " " +
+                      data?.product?.vehicleType?.name
+                  }}
+                </td>
+                <td>{{ data?.quantitySold }}</td>
+                <td>{{ data?.amount | number : ".2-2" }}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td></td>
+                <td>{{ bill?.totalAmount | number : ".2-2" }}</td>
+              </tr>
+
+              <tr>
+                <td>Cash</td>
+                <td></td>
+                <td>{{ bill?.recievedAmount | number : ".2-2" }}</td>
+              </tr>
+
+              <tr>
+                <td>Change</td>
+                <td></td>
+                <td>
+                  {{
+                    bill?.recievedAmount - bill?.totalAmount | number : ".2-2"
+                  }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
-      <div nz-row>
-        <div nz-col nzSpan="24" class="name">
-          <p>Return should be taken within 3 Days, With invoice</p>
-          <p>cash Not Refundable</p>
-        </div>
-      </div>
-      <div nz-row>
-        <div nz-col nzSpan="24" class="name">
-          <p>Thank You & Come Again</p>
-          <p>s/w Solution : Codelantic PVT Limited</p>
-          <nz-divider nzDashed class="dash1"></nz-divider>
-        </div>
-      </div>
+
+      <h3>Thank You!</h3>
     </div>
   </div>
   <!--End Invoice-->

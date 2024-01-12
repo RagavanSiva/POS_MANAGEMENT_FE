@@ -16,6 +16,7 @@ export class CheckoutComponent {
   productList: any[] = [];
   isVisible = false;
   receivedAmount: any;
+  bill: any;
   constructor(
     private productService: ProductService,
     public transactionService: TransactionService,
@@ -86,6 +87,7 @@ export class CheckoutComponent {
     };
     this.transactionService.saveTransaction(data).subscribe({
       next: (res: any) => {
+        this.bill = res;
         this.clear();
         this.notification.create('success', '', 'Sale Successfull');
         this.transactionService.transactionId = null;
@@ -115,6 +117,7 @@ export class CheckoutComponent {
     console.log('res', data);
     this.transactionService.updateTransaction(data).subscribe({
       next: (res: any) => {
+        this.bill = res;
         this.clear();
         this.notification.create('success', '', 'Sale Successfull');
         this.transactionService.transactionId = null;
