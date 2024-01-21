@@ -18,7 +18,7 @@
           <nz-select nzAllowClear nzShowSearch formControlName="brand">
             <nz-option
               *ngFor="let data of brandList"
-              [nzValue]="data"
+              [nzValue]="data._id"
               [nzLabel]="data.name"
             ></nz-option>
           </nz-select>
@@ -50,7 +50,7 @@
           <nz-select nzAllowClear nzShowSearch formControlName="vehicleType">
             <nz-option
               *ngFor="let data of vehicleTypeList"
-              [nzValue]="data"
+              [nzValue]="data._id"
               [nzLabel]="data.name"
             ></nz-option>
           </nz-select>
@@ -71,7 +71,7 @@
       <nz-form-item>
         <nz-form-label>Barcode</nz-form-label>
         <nz-form-control>
-          <input nz-input type="number" formControlName="barcode" />
+          <input nz-input formControlName="barcode" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

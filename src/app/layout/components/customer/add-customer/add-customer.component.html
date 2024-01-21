@@ -1,0 +1,43 @@
+<div class="container">
+  <form
+    nz-form
+    [nzAutoTips]="autoTips"
+    [formGroup]="customerFormGroup"
+    (ngSubmit)="submit()"
+  >
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Name</nz-form-label>
+        <nz-form-control>
+          <input autofocus nz-input name="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>PhoneNumber</nz-form-label>
+        <nz-form-control>
+          <input
+            nz-input
+            name="name"
+            type="number"
+            formControlName="phoneNumber"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Vehicle No</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="name" formControlName="vehicleNumber" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>Address</nz-form-label>
+        <nz-form-control>
+          <textarea rows="4" nz-input formControlName="address"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="button">
+      <button nz-button type="submit" nzType="primary">Save</button>
+    </div>
+  </form>
+</div>

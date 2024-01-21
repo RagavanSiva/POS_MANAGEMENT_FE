@@ -38,6 +38,13 @@ const routes: Routes = [
             (m) => m.TransactionModule
           ),
       },
+      {
+        path: 'customer',
+        loadChildren: () =>
+          import('./layout/components/customer/customer.module').then(
+            (m) => m.CustomerModule
+          ),
+      },
     ],
   },
 ];

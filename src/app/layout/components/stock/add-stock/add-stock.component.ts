@@ -39,6 +39,10 @@ export class AddStockComponent implements OnInit {
     this.initForm();
     this.getBrandDetails();
     this.getVehicleDetails();
+    if (this.productService.updateProduct) {
+      console.log(this.productService.updateProduct);
+      this.patchData(this.productService.updateProduct);
+    }
   }
 
   validateFormFeilds() {
@@ -55,11 +59,11 @@ export class AddStockComponent implements OnInit {
       size: [null, [customRequired('Size')]],
       brand: [null, [customRequired('Brand')]],
       pattern: [null, [customRequired('Pattern')]],
-      vehicleType: [null, [customRequired('Size')]],
+      vehicleType: [null, [customRequired('Vehicle Type')]],
       price: [null, [customRequired('Price')]],
       pr: [null, [customRequired('PR')]],
       remarks: [null],
-      barcode: [null, [exactLength(13)]],
+      barcode: [null],
     });
   }
 
@@ -78,6 +82,13 @@ export class AddStockComponent implements OnInit {
     });
   }
   saveProduct() {
+    if (this.productService.updateProduct) {
+      this.updateProduct();
+    } else {
+      this.save();
+    }
+  }
+  save() {
     if (!this.productFormGroup.valid) {
       this.validateFormFeilds();
       return;
@@ -95,7 +106,6 @@ export class AddStockComponent implements OnInit {
       });
     }
   }
-
   openBrand() {
     const modal = this.modalService.create({
       nzContent: AddBrandComponent,
@@ -122,5 +132,44 @@ export class AddStockComponent implements OnInit {
         this.getVehicleDetails();
       },
     });
+  }
+
+  patchData(data: any) {
+    this.productFormGroup.patchValue({
+      size: data.size,
+      brand: data.brand._id,
+      pattern: data.pattern,
+      vehicleType: data.vehicleType._id,
+      price: data.price,
+      pr: data.pr,
+      remarks: data.remarks,
+    });
+    // this.productFormGroup.disable();
+    // this.productFormGroup.get('price')?.enable();
+    // this.productFormGroup.get('remarks')?.enable();
+  }
+
+  updateProduct() {
+    if (!this.productFormGroup.valid) {
+      this.validateFormFeilds();
+      return;
+    } else {
+      this.productService
+        .updateProductDetails(
+          this.productFormGroup.value,
+          this.productService.updateProduct._id
+        )
+        .subscribe({
+          next: (res: any) => {
+            this.notification.create(
+              'success',
+              'Saved',
+              'Product Saved Successfully'
+            );
+            this.productFormGroup.reset();
+            this.modalref.close();
+          },
+        });
+    }
   }
 }

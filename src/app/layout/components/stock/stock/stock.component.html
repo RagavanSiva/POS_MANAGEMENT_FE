@@ -47,7 +47,12 @@
     </button>
   </div>
   <div class="table">
-    <nz-table [nzFrontPagination]="true" #basicTable [nzData]="dataSet">
+    <nz-table
+      [nzFrontPagination]="false"
+      #basicTable
+      [nzData]="dataSet"
+      [nzScroll]="{ x: '100%' }"
+    >
       <thead>
         <tr>
           <th>Size</th>
@@ -60,6 +65,7 @@
           <th>Warehouse Stock Level</th>
           <th>Shop Stock Level</th>
           <th>Total Stock Level</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -76,17 +82,39 @@
           <td>{{ data.subStockLevel }}</td>
           <td>{{ data.stockLevel + data.subStockLevel }}</td>
           <td>
-            <button
+            <span
               *ngIf="data.barcode"
-              nz-button
-              nzType="primary"
               (click)="generateBarcode(data._id, data)"
-            >
-              Download Barcode
-            </button>
+              nz-icon
+              nzType="barcode"
+              nzTheme="outline"
+            ></span>
+          </td>
+          <td>
+            <span
+              nz-icon
+              nzType="edit"
+              nzTheme="outline"
+              (click)="updateProduct(data)"
+            ></span>
           </td>
         </tr>
       </tbody>
     </nz-table>
+    <div class="pagination">
+      <nz-pagination
+        [nzPageIndex]="page"
+        [nzTotal]="total"
+        [nzPageSize]="limit"
+        [nzShowTotal]="rangeTemplate"
+        (nzPageIndexChange)="changePage($event)"
+      ></nz-pagination>
+      <ng-template #totalTemplate let-total
+        >Total {{ total }} items</ng-template
+      >
+      <ng-template #rangeTemplate let-range="range" let-total>
+        {{ range[0] }}-{{ range[1] }} of {{ total }} items
+      </ng-template>
+    </div>
   </div>
 </div>

@@ -4,6 +4,9 @@ import { TransactionService } from '../../../../_service/transaction.service';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { StorageService } from '../../../../_service/storage.service';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { AddCustomerComponent } from '../../customer/add-customer/add-customer.component';
+import { CustomerService } from '../../../../_service/customer.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,17 +15,29 @@ import { Router } from '@angular/router';
 })
 export class CheckoutComponent {
   total = 0;
+  subTotal = 0;
   products: any[] = [];
   productList: any[] = [];
   isVisible = false;
   receivedAmount: any;
   bill: any;
+  discount: any = 0;
+  customerList: any[] = [];
+  customer: any;
+  isCash = true;
+  isCheque = false;
+  isAC = false;
+  chequeNo: any;
+  paymentMethod = 'cash';
+  nzFilterOption = (): boolean => true;
   constructor(
     private productService: ProductService,
     public transactionService: TransactionService,
     private notification: NzNotificationService,
     private storageService: StorageService,
-    private router: Router
+    private router: Router,
+    private modalService: NzModalService,
+    private customerService: CustomerService
   ) {}
 
   ngOnInit(): void {
@@ -39,9 +54,14 @@ export class CheckoutComponent {
     list.forEach((data) => {
       this.total = this.total + data.netTotal;
     });
+    this.subTotal = this.total;
+    this.total = this.total - this.discount;
     console.log('total', this.total);
   }
 
+  calculateDiscount() {
+    this.total = this.subTotal - this.discount;
+  }
   openTransaction() {
     this.isVisible = true;
   }
@@ -65,10 +85,21 @@ export class CheckoutComponent {
     this.total = 0;
     this.isVisible = false;
     this.receivedAmount = null;
+    this.chequeNo = null;
+    this.discount = 0;
+    this.clearCustomer();
   }
   save() {
-    if (!this.receivedAmount) {
+    if (this.isCash && !this.receivedAmount) {
       this.notification.create('warning', '', 'Need to enter received amount');
+      return;
+    }
+    if (this.isCheque && !this.chequeNo) {
+      this.notification.create('warning', '', 'Need to enter Cheque Number');
+      return;
+    }
+    if (this.isAC && !this.customer) {
+      this.notification.create('warning', '', 'Need to select Customer');
       return;
     }
     this.products = this.productList;
@@ -83,7 +114,12 @@ export class CheckoutComponent {
     });
     const data = {
       products: productlist,
-      recievedAmount: this.receivedAmount,
+      recievedAmount: this.receivedAmount ? this.receivedAmount : 0,
+      paymentMethod: this.paymentMethod,
+      discount: this.discount,
+      customer: this.customer,
+      chequeNo: this.chequeNo,
+      isCompleted: this.isCash ? true : false,
     };
     this.transactionService.saveTransaction(data).subscribe({
       next: (res: any) => {
@@ -95,8 +131,16 @@ export class CheckoutComponent {
     });
   }
   updateSuspendedTransaction() {
-    if (!this.receivedAmount) {
+    if (this.isCash && !this.receivedAmount) {
       this.notification.create('warning', '', 'Need to enter received amount');
+      return;
+    }
+    if (this.isCheque && !this.chequeNo) {
+      this.notification.create('warning', '', 'Need to enter Cheque Number');
+      return;
+    }
+    if (this.isAC && !this.customer) {
+      this.notification.create('warning', '', 'Need to select Customer');
       return;
     }
     this.products = this.productList;
@@ -112,7 +156,12 @@ export class CheckoutComponent {
     const data = {
       transactionId: this.transactionService.transactionId,
       newProducts: productlist,
-      recievedAmount: this.receivedAmount,
+      recievedAmount: this.receivedAmount ? this.receivedAmount : 0,
+      paymentMethod: this.paymentMethod,
+      discount: this.discount,
+      customer: this.customer,
+      chequeNo: this.chequeNo,
+      isCompleted: this.isCash ? true : false,
     };
     console.log('res', data);
     this.transactionService.updateTransaction(data).subscribe({
@@ -140,6 +189,7 @@ export class CheckoutComponent {
       products: productlist,
       recievedAmount: 0,
       isSuspended: true,
+      paymentMethod: this.paymentMethod,
     };
     this.transactionService.saveTransaction(data).subscribe({
       next: (res: any) => {
@@ -151,5 +201,45 @@ export class CheckoutComponent {
   }
   redirectToSuspendedSale() {
     this.router.navigateByUrl('/pos/suspended-sales');
+  }
+
+  addCustomer() {
+    const modal = this.modalService.create({
+      nzContent: AddCustomerComponent,
+      nzFooter: null,
+      nzTitle: 'Add Customer',
+    });
+  }
+
+  getAllCustomers(event: any) {
+    const data: any = {};
+    data['filter'] = event;
+    this.customerService.getAllCustomersSearch(data).subscribe({
+      next: (res: any) => {
+        this.customerList = res;
+      },
+    });
+  }
+  clearCustomer() {
+    this.customer = null;
+  }
+  changetoCheque() {
+    this.isCheque = true;
+    this.isCash = false;
+    this.isAC = false;
+    this.paymentMethod = 'cheque';
+  }
+
+  changetoCash() {
+    this.isCheque = false;
+    this.isCash = true;
+    this.isAC = false;
+    this.paymentMethod = 'cash';
+  }
+  changetoAC() {
+    this.isCheque = false;
+    this.isCash = false;
+    this.isAC = true;
+    this.paymentMethod = 'AC';
   }
 }

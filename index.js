@@ -6,7 +6,7 @@ let win;
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ show: false });
+  win = new BrowserWindow({ show: false, icon: "assets/icon.ico" });
   win.maximize();
   win.show();
 

@@ -1,7 +1,11 @@
 <nz-tabset>
-  <nz-tab nzTitle="Manage"><app-stock></app-stock></nz-tab>
-  <nz-tab nzTitle="Low Stock Warehouse"><app-lowstock></app-lowstock></nz-tab>
-  <nz-tab nzTitle="Low Stock Shop"
+  <nz-tab nzTitle="Manage" (nzClick)="change('manage')"
+    ><app-stock></app-stock
+  ></nz-tab>
+  <nz-tab nzTitle="Low Stock Warehouse" (nzClick)="change('ware')"
+    ><app-lowstock></app-lowstock
+  ></nz-tab>
+  <nz-tab nzTitle="Low Stock Shop" (nzClick)="change('shop')"
     ><app-lowstock-shop></app-lowstock-shop
   ></nz-tab>
 </nz-tabset>

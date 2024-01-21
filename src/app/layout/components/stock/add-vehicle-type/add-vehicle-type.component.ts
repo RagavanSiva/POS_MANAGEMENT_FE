@@ -56,7 +56,7 @@ export class AddVehicleTypeComponent {
       return;
     } else {
       const data = {
-        name: this.brandFormGroup.get('name')?.value,
+        name: this.brandFormGroup.get('name')?.value.toUpperCase(),
       };
       this.vehicleService.saveVehicleDetails(data).subscribe({
         next: (res: any) => {

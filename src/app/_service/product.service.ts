@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ProductService {
   productList: any[] = [];
   product: any;
+  updateProduct: any;
   private _productData: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   productList$: Observable<any> = this._productData.asObservable()!;
   constructor(private http: HttpClient) {}
@@ -19,6 +20,10 @@ export class ProductService {
   saveProduct(data: any) {
     const url = environment.product;
     return this.http.post(url, data);
+  }
+  updateProductDetails(data: any, id: any) {
+    const url = environment.product + '/' + id;
+    return this.http.put(url, data);
   }
   getProductDetailsbyBarcode(data: any) {
     const url = environment.product + '/barcode/' + data;

@@ -3,7 +3,7 @@ import { ProductService } from '../../../../_service/product.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { QuantityComponent } from '../quantity/quantity.component';
 import { BarcodeScannerService } from '../../../../_service/barcode-scanner.service';
-import { Subscription } from 'rxjs';
+import { Subscription, debounce, debounceTime, interval } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -51,16 +51,24 @@ export class ProductComponent implements OnInit, OnDestroy {
   searchProduct(event: any) {
     const data: any = {};
     data['searchTerm'] = event;
-    this.productService.getAllProductsforSerach(data).subscribe({
-      next: (res: any) => {
-        this.productList = res;
-      },
-    });
+    this.productService
+      .getAllProductsforSerach(data)
+      .pipe()
+      .subscribe({
+        next: (res: any) => {
+          if (res.length > 0) {
+            this.productList = res;
+          } else {
+            this.productList = [];
+          }
+        },
+      });
   }
 
   addProduct() {
     if (this.search) {
       this.productService.product = this.search;
+      this.search = null;
       this.productService.productList.push({
         ...this.productService.product,
         quantity: 1,
@@ -70,7 +78,6 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.productService.productList
       );
     }
-    this.search = null;
   }
 
   increaseQty(index: any) {

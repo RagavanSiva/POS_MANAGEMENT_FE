@@ -1,0 +1,29 @@
+<div class="filter">
+  <input
+    nz-input
+    class="search"
+    placeholder="Type here to search"
+    [(ngModel)]="filter"
+    (ngModelChange)="getAllCustomers()"
+  />
+</div>
+<div class="table">
+  <nz-table [nzFrontPagination]="true" #basicTable [nzData]="dataSet">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Vehicle No.</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.name }}</td>
+        <td>{{ data.phoneNumber }}</td>
+        <td>{{ data.vehicleNumber }}</td>
+        <td>{{ data.address }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

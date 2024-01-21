@@ -6,6 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { AddWarehouseStockComponent } from '../add-warehouse-stock/add-warehouse-stock.component';
 import { AddShopStockComponent } from '../add-shop-stock/add-shop-stock.component';
 import { AddStockComponent } from '../add-stock/add-stock.component';
+import { EventTriggerService } from '../../../../_service/event-trigger.service';
 
 @Component({
   selector: 'app-stock',
@@ -16,6 +17,9 @@ export class StockComponent implements OnInit {
   dataSet: any[] = [];
   brand: any;
   size = '';
+  page = 1;
+  limit = 10;
+  total = 0;
   vehicleType: any;
   brandList: any[] = [];
   vehicleTypeList: any[] = [];
@@ -24,12 +28,20 @@ export class StockComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private vehicleService: VehicleTypeService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private event: EventTriggerService
   ) {}
   ngOnInit(): void {
     this.getAllProductDetails();
     this.getBrandDetails();
     this.getVehicleDetails();
+    this.event.executeOnchangeFunction.subscribe({
+      next: (res: any) => {
+        if (res === 'manage') {
+          this.getAllProductDetails();
+        }
+      },
+    });
   }
 
   getBrandDetails() {
@@ -53,9 +65,14 @@ export class StockComponent implements OnInit {
     data['brand'] = this.brand;
     this.productService.getAllProducts(data).subscribe({
       next: (res: any) => {
-        this.dataSet = res;
+        this.dataSet = res.products;
+        this.total = res.totalSize;
       },
     });
+  }
+  changePage(event: any) {
+    this.page = event;
+    this.getAllProductDetails();
   }
 
   addStockToWarehouse() {
@@ -72,10 +89,25 @@ export class StockComponent implements OnInit {
     });
   }
   addNewProduct() {
+    this.productService.updateProduct = null;
     const modal = this.modalService.create({
       nzContent: AddStockComponent,
       nzFooter: null,
       nzTitle: 'Add New Product',
+    });
+
+    modal.afterClose.subscribe({
+      next: (res) => {
+        this.getAllProductDetails();
+      },
+    });
+  }
+  updateProduct(data: any) {
+    this.productService.updateProduct = data;
+    const modal = this.modalService.create({
+      nzContent: AddStockComponent,
+      nzFooter: null,
+      nzTitle: 'Update Product',
     });
 
     modal.afterClose.subscribe({

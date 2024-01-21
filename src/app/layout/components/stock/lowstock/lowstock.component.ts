@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../../../../_service/product.service';
+import { EventTriggerService } from '../../../../_service/event-trigger.service';
 
 @Component({
   selector: 'app-lowstock',
@@ -8,9 +9,20 @@ import { ProductService } from '../../../../_service/product.service';
 })
 export class LowstockComponent {
   dataSet: any[] = [];
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private event: EventTriggerService
+  ) {}
+
   ngOnInit(): void {
     this.getLowStock();
+    this.event.executeOnchangeFunction.subscribe({
+      next: (res: any) => {
+        if (res === 'ware') {
+          this.getLowStock();
+        }
+      },
+    });
   }
 
   getLowStock() {

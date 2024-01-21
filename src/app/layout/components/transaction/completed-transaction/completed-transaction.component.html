@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="filter">
+    <nz-range-picker
+      [(ngModel)]="date"
+      (ngModelChange)="getAllTransaction()"
+    ></nz-range-picker>
+    <button nz-button nzType="primary" (click)="download()">Download</button>
+  </div>
+
+  <div class="amount">
+    <span
+      >Current Month Transaction: Rs
+      {{ currentMonthAverage | number : ".2-2" }}</span
+    >
+  </div>
+  <div class="table">
+    <nz-table
+      [nzFrontPagination]="false"
+      [nzScroll]="{ x: '100%' }"
+      #basicTable
+      [nzData]="dataSet"
+    >
+      <thead>
+        <tr>
+          <th>Bill NO.</th>
+          <th>Date</th>
+          <th>Total Amount</th>
+          <th>Payment Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{ data.customId }}</td>
+          <td>{{ data.transactionDate | date : "medium" }}</td>
+          <td>{{ data.totalPrice | number : ".2-2" }}</td>
+          <td>{{ data.paymentMethod | uppercase }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="pagination">
+      <nz-pagination
+        [nzPageIndex]="page"
+        [nzTotal]="total"
+        [nzPageSize]="limit"
+        [nzShowTotal]="rangeTemplate"
+        (nzPageIndexChange)="changePage($event)"
+      ></nz-pagination>
+      <ng-template #totalTemplate let-total
+        >Total {{ total }} items</ng-template
+      >
+      <ng-template #rangeTemplate let-range="range" let-total>
+        {{ range[0] }}-{{ range[1] }} of {{ total }} items
+      </ng-template>
+    </div>
+  </div>
+</div>

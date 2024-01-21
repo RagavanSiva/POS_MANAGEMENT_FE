@@ -55,7 +55,7 @@ export class AddBrandComponent implements OnInit {
       return;
     } else {
       const data = {
-        name: this.brandFormGroup.get('name')?.value,
+        name: this.brandFormGroup.get('name')?.value.toUpperCase(),
       };
       this.brandService.saveBrandDetail(data).subscribe({
         next: (res: any) => {
@@ -65,6 +65,9 @@ export class AddBrandComponent implements OnInit {
             'Product Saved Successfully'
           );
           this.modalref.close();
+        },
+        error: (err) => {
+          this.notification.create('error', '', err.error.message);
         },
       });
     }

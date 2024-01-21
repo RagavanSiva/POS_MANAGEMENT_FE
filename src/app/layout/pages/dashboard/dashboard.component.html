@@ -1,5 +1,10 @@
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider
+    nzBreakpoint="xxl"
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" routerLinkActive="active" nzMode="inline">
       <li
@@ -23,6 +28,15 @@
       >
         <span nz-icon nzType="bar-chart" nzMode="inline"></span>
         <span>Transaction</span>
+      </li>
+      <li
+        nz-menu-item
+        nzMatchRouter
+        routerLink="customer"
+        routerLinkActive="active"
+      >
+        <span nz-icon nzType="user" nzTheme="outline"></span>
+        <span>Customer</span>
       </li>
       <li nz-menu-item (click)="logout()">
         <span nz-icon nzType="logout" nzMode="inline"></span>

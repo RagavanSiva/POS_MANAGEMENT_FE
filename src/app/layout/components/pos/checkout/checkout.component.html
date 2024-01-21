@@ -1,17 +1,75 @@
 <div class="container">
-  <div class="suspend" *ngIf="productList.length <= 0">
+  <div class="flex-btn suspend" *ngIf="productList.length <= 0">
     <button nz-button nzType="primary" (click)="redirectToSuspendedSale()">
       Suspended Sales
     </button>
   </div>
+
+  <div class="customer">
+    <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+      <nz-select
+        nzAutoFocus
+        nzShowSearch
+        nzAllowClear
+        nzServerSearch
+        [(ngModel)]="customer"
+        [nzShowArrow]="false"
+        [nzFilterOption]="nzFilterOption"
+        (nzOnSearch)="getAllCustomers($event)"
+        nzPlaceHolder="Type here to search Customer"
+      >
+        <nz-option
+          *ngFor="let data of customerList"
+          [nzValue]="data"
+          [nzLabel]="data.name"
+        ></nz-option>
+      </nz-select>
+    </nz-input-group>
+    <ng-template #addOnBeforeTemplate>
+      <span
+        nz-icon
+        nzType="user-add"
+        (click)="addCustomer()"
+        nzTheme="outline"
+      ></span>
+    </ng-template>
+
+    <div class="customer-view" *ngIf="customer">
+      <div class="name">
+        <!-- <span nz-icon nzType="user" nzTheme="outline"></span> -->
+        <span>{{ customer.name }}</span>
+        <span>{{ customer.phoneNumber }}</span>
+      </div>
+      <span>{{ customer.vehicleNumber }}</span>
+      <span
+        nz-icon
+        nzType="close"
+        (click)="clearCustomer()"
+        style="color: red"
+        nzTheme="outline"
+      ></span>
+    </div>
+  </div>
+
   <span>Sales Summary</span>
   <nz-divider></nz-divider>
   <div class="total">
     <div nz-row nzJustify="space-between">
-      <span>Sub Total</span><span>{{ total | number : ".2-2" }}</span>
+      <span>Sub Total</span><span>{{ subTotal | number : ".2-2" }}</span>
     </div>
     <div nz-row nzJustify="space-between">
-      <span>Discount</span><span>0.00</span>
+      <span>Discount</span
+      ><span>
+        <input
+          *ngIf="productList.length > 0"
+          autofocus
+          nz-input
+          type="number"
+          [(ngModel)]="discount"
+          (ngModelChange)="calculateDiscount()"
+        />
+        <span *ngIf="productList.length <= 0">0.00</span></span
+      >
     </div>
     <div nz-row nzJustify="space-between">
       <span>VAT</span><span>0.00</span>
@@ -20,13 +78,21 @@
     <div nz-row nzJustify="space-between">
       <span>Total</span><span>{{ total | number : ".2-2" }}</span>
     </div>
-    <div nz-row nzJustify="space-between" *ngIf="isVisible">
+    <div
+      nz-row
+      nzJustify="space-between"
+      *ngIf="isCash && productList.length > 0"
+    >
       <span>Received Amount</span
       ><span>
-        <input autofocus nz-input type="number" [(ngModel)]="receivedAmount"
+        <input nz-input type="number" [(ngModel)]="receivedAmount"
       /></span>
     </div>
-    <div nz-row nzJustify="space-between" *ngIf="isVisible">
+    <div
+      nz-row
+      nzJustify="space-between"
+      *ngIf="isCash && productList.length > 0"
+    >
       <span>Balance</span
       ><span>{{
         receivedAmount
@@ -35,24 +101,49 @@
       }}</span>
     </div>
   </div>
+  <div class="cheque" *ngIf="isCheque && productList.length > 0">
+    <div nz-row nzJustify="space-between">
+      <span>Cheque No: </span
+      ><span> <input nz-input type="number" [(ngModel)]="chequeNo" /></span>
+    </div>
+  </div>
+  <div class="flex-btn">
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="productList.length <= 0"
+      (click)="changetoCash()"
+    >
+      Cash
+    </button>
 
-  <button
-    nz-button
-    nzType="primary"
-    *ngIf="!isVisible"
-    [disabled]="productList.length <= 0"
-    (click)="openTransaction()"
-  >
-    Payment
-  </button>
-  <button
-    nz-button
-    nzType="primary"
-    *ngIf="isVisible"
-    (click)="saveTransaction()"
-  >
-    Complete Sale
-  </button>
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="productList.length <= 0"
+      (click)="changetoCheque()"
+    >
+      Cheque
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="changetoAC()"
+      [disabled]="productList.length <= 0"
+    >
+      AC
+    </button>
+  </div>
+  <div class="flex-btn complete">
+    <button
+      nz-button
+      nzType="primary"
+      *ngIf="productList.length > 0"
+      (click)="saveTransaction()"
+    >
+      Complete Sale
+    </button>
+  </div>
   <div class="bottom">
     <button
       nz-button
