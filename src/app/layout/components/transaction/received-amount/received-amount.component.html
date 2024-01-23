@@ -1,0 +1,26 @@
+<div class="container">
+  <form
+    nz-form
+    [nzAutoTips]="autoTips"
+    [formGroup]="transactionFormGroup"
+    (ngSubmit)="submit()"
+  >
+    <div class="form">
+      <nz-form-item>
+        <nz-form-label>Received Amount</nz-form-label>
+        <nz-form-control>
+          <input
+            autofocus
+            nz-input
+            type="number"
+            name="amount"
+            formControlName="amount"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="button">
+      <button nz-button type="submit" nzType="primary">Save</button>
+    </div>
+  </form>
+</div>

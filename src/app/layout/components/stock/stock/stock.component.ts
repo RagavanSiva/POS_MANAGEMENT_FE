@@ -7,6 +7,7 @@ import { AddWarehouseStockComponent } from '../add-warehouse-stock/add-warehouse
 import { AddShopStockComponent } from '../add-shop-stock/add-shop-stock.component';
 import { AddStockComponent } from '../add-stock/add-stock.component';
 import { EventTriggerService } from '../../../../_service/event-trigger.service';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-stock',
@@ -29,7 +30,8 @@ export class StockComponent implements OnInit {
     private brandService: BrandService,
     private vehicleService: VehicleTypeService,
     private modalService: NzModalService,
-    private event: EventTriggerService
+    private event: EventTriggerService,
+    private notification: NzNotificationService
   ) {}
   ngOnInit(): void {
     this.getAllProductDetails();
@@ -60,6 +62,8 @@ export class StockComponent implements OnInit {
   }
   getAllProductDetails() {
     const data: any = {};
+    data['page'] = this.page;
+    data['limit'] = this.limit;
     data['size'] = this.size;
     data['vehicleType'] = this.vehicleType;
     data['brand'] = this.brand;
@@ -98,6 +102,18 @@ export class StockComponent implements OnInit {
 
     modal.afterClose.subscribe({
       next: (res) => {
+        this.getAllProductDetails();
+      },
+    });
+  }
+  delete(id: any) {
+    this.productService.delete(id).subscribe({
+      next: (res: any) => {
+        this.notification.create(
+          'success',
+          'Deleted',
+          'Product Deleted Successfully'
+        );
         this.getAllProductDetails();
       },
     });

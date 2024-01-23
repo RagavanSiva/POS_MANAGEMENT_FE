@@ -1,5 +1,8 @@
 .ant-btn-primary
     width: 100%
+    &:focus
+        background-color: #001529
+        border: none
 .bottom
     margin-top: 20px
     display: flex
@@ -29,3 +32,17 @@
     margin-top: 10px
 .cheque
     margin-bottom: 10px
+.date,.addtion
+    margin-top: 5px
+.ant-radio-button-wrapper
+    width: 33.33%
+    text-align: center
+.ant-radio-group
+    width: 100%
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)
+    background: #001529
+    color: #fff
+    // border: none
+    border-color: #001529
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before
+    background-color: unset

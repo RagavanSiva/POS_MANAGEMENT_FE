@@ -37,6 +37,10 @@ export class ProductService {
     const url = environment.product + '/lowstock-shop';
     return this.http.get(url);
   }
+  delete(id: any) {
+    const url = environment.product + '/' + id;
+    return this.http.delete(url);
+  }
   downloadCSV() {
     const url = environment.product + '/csv-download';
     return this.http.get(url, { responseType: 'arraybuffer' });
@@ -57,9 +61,7 @@ export class ProductService {
       ? (httpParam = httpParam.append('vehicleType', data.vehicleType))
       : null;
     data.page ? (httpParam = httpParam.append('page', data.page)) : null;
-    data.pageSize
-      ? (httpParam = httpParam.append('pageSize', data.pageSize))
-      : null;
+    data.limit ? (httpParam = httpParam.append('limit', data.limit)) : null;
     const url = environment.product;
     return this.http.get(url, { params: httpParam });
   }

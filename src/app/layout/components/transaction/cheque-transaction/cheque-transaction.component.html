@@ -4,6 +4,25 @@
       [(ngModel)]="date"
       (ngModelChange)="getAllChequeTransaction()"
     ></nz-range-picker>
+    <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder="Search by Customer"
+      [(ngModel)]="customer"
+      (ngModelChange)="getAllChequeTransaction()"
+    >
+      <nz-option
+        *ngFor="let data of customerList"
+        [nzLabel]="data.name"
+        [nzValue]="data._id"
+      ></nz-option>
+    </nz-select>
+    <!-- <input
+      nz-input
+      [(ngModel)]="customer"
+      (ngModelChange)="getAllChequeTransaction()"
+      placeholder="Search by Customer"
+    /> -->
     <!-- <button nz-button nzType="primary" (click)="download()">Download</button> -->
   </div>
 
@@ -24,31 +43,65 @@
         <tr>
           <th>Bill NO.</th>
           <th>Cheque No.</th>
+          <th>Due Date</th>
           <th>Date</th>
           <th>Customer Name</th>
           <th>Total Amount</th>
+          <th>Received Amount</th>
+          <th>Due Amount</th>
+          <th>Update Received Amount</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data">
-          <td>{{ data.customId }}</td>
-          <td>{{ data.chequeNo }}</td>
-          <td>{{ data.transactionDate | date : "medium" }}</td>
-          <td>{{ data?.customer?.name | titlecase }}</td>
-          <td>{{ data.totalPrice | number : ".2-2" }}</td>
-          <td>
-            <button
-              nz-button
-              nzType="primary"
-              nz-popconfirm
-              nzPopconfirmTitle="Are you sure want to complete this Transaction?"
-              nzPopconfirmPlacement="bottom"
-              (nzOnConfirm)="complete(data._id)"
-            >
-              Complete
-            </button>
-          </td>
+        <tr
+          *ngFor="let data of basicTable.data"
+          [class.due]="data.totalPrice - data.receivedAmount > 0"
+        >
+          <ng-container>
+            <td>{{ data.customId }}</td>
+            <td>{{ data.chequeNo }}</td>
+            <td>
+              <div *ngIf="!disabledDate(data.chequeDueDate)" class="due">
+                {{ data.chequeDueDate | date : "yyyy-MM-dd" }}
+              </div>
+              <div *ngIf="disabledDate(data.chequeDueDate)">
+                {{ data.chequeDueDate | date : "yyyy-MM-dd" }}
+              </div>
+            </td>
+            <td>{{ data.transactionDate | date : "medium" }}</td>
+            <td>{{ data?.customer?.name | titlecase }}</td>
+            <td>{{ data.totalPrice | number : ".2-2" }}</td>
+            <td>{{ data.recievedAmount | number : ".2-2" }}</td>
+            <td>
+              {{ data.totalPrice - data.recievedAmount | number : ".2-2" }}
+            </td>
+            <td>
+              <span
+                *ngIf="data.totalPrice - data.recievedAmount > 0"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure want to update this Transaction?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="openReceivedTranaction(data._id)"
+              ></span>
+            </td>
+            <td>
+              <button
+                *ngIf="data.totalPrice - data.recievedAmount == 0"
+                nz-button
+                nzType="primary"
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure want to complete this Transaction?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="complete(data._id)"
+              >
+                Complete
+              </button>
+            </td>
+          </ng-container>
         </tr>
       </tbody>
     </nz-table>

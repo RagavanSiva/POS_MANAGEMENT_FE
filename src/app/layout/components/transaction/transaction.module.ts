@@ -7,13 +7,15 @@ import { TransactionComponent } from './transaction/transaction.component';
 import { CompletedTransactionComponent } from './completed-transaction/completed-transaction.component';
 import { ChequeTransactionComponent } from './cheque-transaction/cheque-transaction.component';
 import { AcTransactionComponent } from './ac-transaction/ac-transaction.component';
+import { ReceivedAmountComponent } from './received-amount/received-amount.component';
 
 @NgModule({
   declarations: [
     TransactionComponent,
     CompletedTransactionComponent,
     ChequeTransactionComponent,
-    AcTransactionComponent
+    AcTransactionComponent,
+    ReceivedAmountComponent
   ],
   imports: [CommonModule, TransactionRoutingModule, SharedModule],
 })

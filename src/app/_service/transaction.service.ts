@@ -30,6 +30,10 @@ export class TransactionService {
     const url = environment.transaction + '/isCompleted/' + id;
     return this.http.patch(url, data);
   }
+  updateReceivedAmountTransaction(data: any, id: any) {
+    const url = environment.transaction + '/update-received-amount/' + id;
+    return this.http.patch(url, data);
+  }
 
   getAllTransaction(data: any) {
     let httpParam = new HttpParams();
@@ -37,6 +41,9 @@ export class TransactionService {
     httpParam = httpParam.append('limit', data.limit);
     data.startDate
       ? (httpParam = httpParam.append('startDate', data.startDate))
+      : null;
+    data.customer
+      ? (httpParam = httpParam.append('customerName', data.customer))
       : null;
     data.endDate
       ? (httpParam = httpParam.append('endDate', data.endDate))

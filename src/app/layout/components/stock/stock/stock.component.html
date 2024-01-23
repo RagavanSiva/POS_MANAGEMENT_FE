@@ -67,6 +67,7 @@
           <th>Total Stock Level</th>
           <th></th>
           <th></th>
+          <!-- <th></th> -->
         </tr>
       </thead>
       <tbody>
@@ -98,6 +99,17 @@
               (click)="updateProduct(data)"
             ></span>
           </td>
+          <!-- <td>
+            <span
+              nz-icon
+              nzType="delete"
+              nzTheme="outline"
+              nz-popconfirm
+              nzPopconfirmTitle="Are you sure want to delete this Product?"
+              nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="delete(data._id)"
+            ></span>
+          </td> -->
         </tr>
       </tbody>
     </nz-table>

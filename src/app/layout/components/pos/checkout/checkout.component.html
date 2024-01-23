@@ -71,28 +71,48 @@
         <span *ngIf="productList.length <= 0">0.00</span></span
       >
     </div>
-    <div nz-row nzJustify="space-between">
-      <span>VAT</span><span>0.00</span>
-    </div>
-    <nz-divider></nz-divider>
-    <div nz-row nzJustify="space-between">
-      <span>Total</span><span>{{ total | number : ".2-2" }}</span>
-    </div>
+
     <div
       nz-row
       nzJustify="space-between"
-      *ngIf="isCash && productList.length > 0"
+      class="addtion"
+      *ngIf="productList.length > 0"
     >
-      <span>Received Amount</span
+      <span>Additonal Amount</span
       ><span>
-        <input nz-input type="number" [(ngModel)]="receivedAmount"
+        <input
+          nz-input
+          type="number"
+          (input)="calculateDiscount()"
+          [(ngModel)]="additionalAmount"
       /></span>
     </div>
     <div
       nz-row
       nzJustify="space-between"
-      *ngIf="isCash && productList.length > 0"
+      class="addtion"
+      *ngIf="productList.length > 0"
     >
+      <span>Change fee</span
+      ><span>
+        <input
+          nz-input
+          type="number"
+          (input)="calculateDiscount()"
+          [(ngModel)]="changefee"
+      /></span>
+    </div>
+    <nz-divider></nz-divider>
+    <div nz-row nzJustify="space-between">
+      <span>Total</span><span>{{ total | number : ".2-2" }}</span>
+    </div>
+    <div nz-row nzJustify="space-between" *ngIf="productList.length > 0">
+      <span>Received Amount</span
+      ><span>
+        <input nz-input type="number" [(ngModel)]="receivedAmount"
+      /></span>
+    </div>
+    <div nz-row nzJustify="space-between" *ngIf="productList.length > 0">
       <span>Balance</span
       ><span>{{
         receivedAmount
@@ -103,12 +123,34 @@
   </div>
   <div class="cheque" *ngIf="isCheque && productList.length > 0">
     <div nz-row nzJustify="space-between">
-      <span>Cheque No: </span
-      ><span> <input nz-input type="number" [(ngModel)]="chequeNo" /></span>
+      <span>Cheque No: </span>
+      <span> <input nz-input type="number" [(ngModel)]="chequeNo" /></span>
+    </div>
+    <div nz-row nzJustify="space-between" class="date">
+      <span>Due Date: </span>
+      <span>
+        <nz-date-picker
+          [(ngModel)]="date"
+          (ngModelChange)="changeDate()"
+        ></nz-date-picker
+      ></span>
     </div>
   </div>
   <div class="flex-btn">
-    <button
+    <nz-radio-group
+      [(ngModel)]="paymentMethod"
+      [disabled]="productList.length <= 0"
+    >
+      <label nz-radio-button nzValue="cash" (click)="changetoCash()"
+        >Cash</label
+      >
+      <label nz-radio-button nzValue="cheque" (click)="changetoCheque()">
+        Cheque</label
+      >
+      <label nz-radio-button nzValue="AC" (click)="changetoAC()">AC</label>
+    </nz-radio-group>
+    <!-- <button
+      #myButton
       nz-button
       nzType="primary"
       [disabled]="productList.length <= 0"
@@ -132,7 +174,7 @@
       [disabled]="productList.length <= 0"
     >
       AC
-    </button>
+    </button> -->
   </div>
   <div class="flex-btn complete">
     <button

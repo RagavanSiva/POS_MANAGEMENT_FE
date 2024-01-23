@@ -103,6 +103,9 @@ export class AddStockComponent implements OnInit {
           this.productFormGroup.reset();
           this.modalref.close();
         },
+        error: (err) => {
+          this.notification.create('error', '', err.error.message);
+        },
       });
     }
   }

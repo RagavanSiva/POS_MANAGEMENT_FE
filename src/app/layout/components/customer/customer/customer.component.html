@@ -6,6 +6,9 @@
     [(ngModel)]="filter"
     (ngModelChange)="getAllCustomers()"
   />
+  <button nz-button nzType="primary" (click)="addCustomer()">
+    Add Customer
+  </button>
 </div>
 <div class="table">
   <nz-table [nzFrontPagination]="true" #basicTable [nzData]="dataSet">
